@@ -4,6 +4,7 @@ import './styles/tailwind.css';
 import App from './components/app';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
+import AuthProvider from './context/authContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </HelmetProvider>
   </React.StrictMode>
 );

@@ -4,6 +4,7 @@ import { FormError } from '../components/form-error';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
+import { useAuthActions, useAuthState } from '../context/authContext';
 
 interface ILoginForm {
   email: string;
@@ -11,7 +12,9 @@ interface ILoginForm {
 }
 
 export const Signin = () => {
-  const [loading, setLoading] = useState(false);
+  const { loginError, isLoggingIn } = useAuthState();
+  const { login } = useAuthActions();
+
   const {
     register,
     formState: { isSubmitting, isValid, errors },
@@ -22,22 +25,16 @@ export const Signin = () => {
   });
 
   const onSubmit = async () => {
-    if (!loading) {
+    if (!isLoggingIn) {
+      const { email, password } = getValues();
       try {
-        const { email, password } = getValues();
-        fetch(`${process.env.REACT_APP_API_URL}/user/login`, {
-          method: 'POST',
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((res) => res.json())
-          .then((data) => console.log(data));
-      } catch (e) {}
+        if (!(email && password)) {
+          throw new Error('Cannot submit');
+        }
+        login(email, password);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
   return (
@@ -88,6 +85,7 @@ export const Signin = () => {
             loading={isSubmitting}
             actionText={'Log in'}
           />
+          {loginError && <FormError errorMessage={loginError} />}
         </form>
         <div>
           New to Account manager?{' '}
