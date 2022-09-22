@@ -15,7 +15,7 @@ import {
   AuthActionType,
   LoginResponse,
   User,
-} from '../interfaces/auth.interface';
+} from '../types/auth.interface';
 
 // initial state for the useReducer hook
 const initialState: IAuthState = {

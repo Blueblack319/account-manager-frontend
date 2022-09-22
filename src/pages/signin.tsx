@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '../components/button';
 import { FormError } from '../components/form-error';
 import { Link } from 'react-router-dom';
@@ -43,7 +43,7 @@ export const Signin = () => {
         <title>Login | Nuber Eats</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
-        <h4 className="w-full text-center font-medium text-3xl mb-5">
+        <h4 className="w-full text-left font-medium text-3xl mb-5">
           Welcome back
         </h4>
         <form
