@@ -182,21 +182,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         // const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
         // if (userId && token) {
-        if (token) {
-          // dispatch({ type: AuthActionType.INIT_FETCH_USER_DATA });
-          // const user = await getUserData(userId);
-          // if (user) {
-          //   dispatch({
-          //     type: AuthActionType.FETCH_USER_DATA_SUCCESSFUL,
-          //     payload: { user },
-          //   });
-          // } else {
-          //   dispatch({
-          //     type: AuthActionType.FETCH_USER_DATA_FAILED,
-          //   });
-          // }
-          dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL });
-        }
+        if (token) dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL });
       } catch (error: Error | any) {
         dispatch({
           type: AuthActionType.FETCH_USER_DATA_FAILED,
@@ -216,10 +202,6 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const { user, token } = loginResponse;
         // store the token in localStorage
         localStorage.setItem('token', token);
-
-        // store the user's id in localStorage
-        // localStorage.setItem('userId', user.id);
-
         // complete a successful login process
         dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL, payload: { user } });
         // go to the home page
