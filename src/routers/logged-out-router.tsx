@@ -3,7 +3,6 @@ import { Signin } from '../pages/signin';
 import { CreateAccount } from '../pages/create-account';
 import { NotFound } from '../pages/404';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { EditProfile } from '../pages/user/edit-profile';
 
 export const LoggedOutRouter = () => {
   return (

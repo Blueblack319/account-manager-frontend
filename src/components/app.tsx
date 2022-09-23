@@ -5,7 +5,6 @@ import { LoggedInRouter } from '../routers/logged-in-router';
 
 function App() {
   const { isLoggedIn } = useAuthState();
-  console.log(isLoggedIn);
   return isLoggedIn ? <LoggedInRouter /> : <LoggedOutRouter />;
 }
 
