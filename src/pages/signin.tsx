@@ -4,9 +4,9 @@ import { FormError } from '../components/form-error';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useAuthActions, useAuthState } from '../context/authContext';
+import { useAuthActions, useAuthState } from '../utils/context/authContext';
 
-interface ILoginForm {
+interface ISigninForm {
   email: string;
   password: string;
 }
@@ -20,7 +20,7 @@ export const Signin = () => {
     formState: { isSubmitting, isValid, errors },
     handleSubmit,
     getValues,
-  } = useForm<ILoginForm>({
+  } = useForm<ISigninForm>({
     mode: 'onChange',
   });
 
@@ -40,7 +40,7 @@ export const Signin = () => {
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">
       <Helmet>
-        <title>Login | Nuber Eats</title>
+        <title>Signin | Account Manager</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col px-5 items-center">
         <h4 className="w-full text-left font-medium text-3xl mb-5">

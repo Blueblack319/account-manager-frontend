@@ -108,26 +108,23 @@ const loginFn = async (
 ): Promise<LoginResponse | null> => {
   try {
     const data = JSON.stringify({ email, password });
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/user/login`,
-      {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: data,
-      }
-    );
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/signin`, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: data,
+    });
     if (response && response.status === 200) {
       const responseData = await response.json();
       if (responseData) {
         return {
-          // user: {
-          //   id: responseData.Id,
-          //   email: responseData.Email,
-          //   name: responseData.Name,
-          // },
+          user: {
+            id: responseData.Id,
+            email: responseData.Email,
+            name: responseData.Name,
+          },
           token: responseData.token,
         };
       } else {
@@ -143,14 +140,11 @@ const loginFn = async (
 const getUserData = async (userId: string): Promise<User | null> => {
   try {
     const token = localStorage.getItem('token') || '';
-    const response = await fetch(
-      `${process.env.REREACT_APP_API_URL}/user/profile`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await fetch(`${process.env.REREACT_APP_API_URL}/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (response && response.status === 200) {
       const responseData = await response.json();
       if (responseData) {
@@ -179,10 +173,23 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('userId');
         const token = localStorage.getItem('token');
         // if (userId && token) {
-        if (token) dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL });
+        if (userId && token) {
+          dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL });
+          const user = await getUserData(userId);
+          if (user) {
+            dispatch({
+              type: AuthActionType.FETCH_USER_DATA_SUCCESSFUL,
+              payload: { user },
+            });
+          } else {
+            dispatch({
+              type: AuthActionType.FETCH_USER_DATA_FAILED,
+            });
+          }
+        }
       } catch (error: Error | any) {
         dispatch({
           type: AuthActionType.FETCH_USER_DATA_FAILED,
@@ -202,10 +209,9 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const { user, token } = loginResponse;
         // store the token in localStorage
         localStorage.setItem('token', token);
+        localStorage.setItem('userId', user.id);
         // complete a successful login process
         dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL, payload: { user } });
-        // go to the home page
-        // window.location.href = '/';
       } else {
         dispatch({
           type: AuthActionType.LOGIN_FAILED,

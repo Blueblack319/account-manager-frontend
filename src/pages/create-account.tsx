@@ -1,13 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import signup from '../api/service/signup.api';
 import { Button } from '../components/button';
 import { FormError } from '../components/form-error';
-
-interface CreateAccountResponse {
-  token: string;
-}
 
 interface ICreateAccountForm {
   email: string;
@@ -28,44 +25,6 @@ export const CreateAccount = () => {
 
   const navigate = useNavigate();
 
-  const signin = useCallback(
-    async (
-      name: string,
-      email: string,
-      password: string
-    ): Promise<CreateAccountResponse | null> => {
-      try {
-        const data = JSON.stringify({ name, email, password });
-        const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/user/register`,
-          {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: data,
-          }
-        );
-        console.log(response);
-        if (response && response.status === 201) {
-          const responseData = await response.json();
-          if (responseData) {
-            return {
-              token: responseData.token,
-            };
-          } else {
-            throw new Error('Token data not found');
-          }
-        }
-        return null;
-      } catch (e: Error | any) {
-        throw new Error(e.message || 'Create an account failed');
-      }
-    },
-    []
-  );
-
   const onSubmit = async () => {
     if (!isSubmitting && isSubmitted) {
       const { name, email, password } = getValues();
@@ -73,9 +32,13 @@ export const CreateAccount = () => {
         if (!(name && email && password)) {
           throw new Error('Cannot submit');
         }
-        const registerResponse = await signin(name, email, password);
+        const registerResponse = await signup(name, email, password);
         if (registerResponse) {
-          const { token } = registerResponse;
+          const {
+            user: { id },
+            token,
+          } = registerResponse;
+          localStorage.setItem('userId', id);
           localStorage.setItem('token', token);
           navigate('/');
         } else {

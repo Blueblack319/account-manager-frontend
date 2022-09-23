@@ -4,7 +4,7 @@ import './styles/tailwind.css';
 import App from './components/app';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
-import AuthProvider from './context/authContext';
+import AuthProvider from './utils/context/authContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -5,7 +5,7 @@ export interface User {
 }
 
 export interface LoginResponse {
-  user?: User;
+  user: User;
   token: string;
 }
 
