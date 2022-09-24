@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ export const CreateAccount = () => {
 
   const navigate = useNavigate();
 
-  const onSubmit = async () => {
+  const onSubmit = useCallback(async () => {
     if (!isSubmitting && isSubmitted) {
       const { name, email, password } = getValues();
       try {
@@ -49,7 +49,7 @@ export const CreateAccount = () => {
         console.log(e);
       }
     }
-  };
+  }, [getValues, isSubmitted, isSubmitting, navigate]);
 
   return (
     <div className="h-screen flex items-center flex-col mt-10 lg:mt-28">

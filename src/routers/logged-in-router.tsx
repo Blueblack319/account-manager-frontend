@@ -12,11 +12,9 @@ export const LoggedInRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/">
-          {routes.map((route) => (
-            <Route path={route.path} element={route.component} />
-          ))}
-        </Route>
+        {routes.map((route) => (
+          <Route path={route.path} key={route.path} element={route.component} />
+        ))}
       </Routes>
     </Router>
   );
