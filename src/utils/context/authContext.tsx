@@ -121,9 +121,9 @@ const loginFn = async (
       if (responseData) {
         return {
           user: {
-            id: responseData.Id,
-            email: responseData.Email,
-            name: responseData.Name,
+            id: responseData.id,
+            email: responseData.email,
+            name: responseData.name,
           },
           token: responseData.token,
         };

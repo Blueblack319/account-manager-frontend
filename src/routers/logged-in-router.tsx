@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Header } from '../components/header';
 import { MyStyles } from '../pages/style/myStyles';
 import { EditProfile } from '../pages/user/edit-profile';
 
@@ -12,7 +11,6 @@ const routes = [
 export const LoggedInRouter = () => {
   return (
     <Router>
-      <Header />
       <Routes>
         <Route path="/">
           {routes.map((route) => (
