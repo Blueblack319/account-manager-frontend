@@ -52,7 +52,7 @@ export const MyStyles = () => {
         throw new Error('Fetch data failed');
       }
       const data = await response.json();
-
+      console.log(data.styles);
       setStyles(data.styles);
     } catch (e: Error | any) {
       setError(e.message);
@@ -65,7 +65,6 @@ export const MyStyles = () => {
   // console.log(styles);
   useEffect(() => {
     getMyStyles();
-    console.log(user);
   }, []);
 
   return (
@@ -78,9 +77,10 @@ export const MyStyles = () => {
           <h2 className="mb-12 text-center text-2xl text-gray-900 font-bold md:text-4xl">
             당신의 투자스타일을 찾아보세요
           </h2>
-          <div className="grid gap-8 mx-60">
+          <div className="grid gap-8 lg:mx-20 xl:mx-40">
             {styles?.map((style) => (
               <StyleOverview
+                key={style.name}
                 owner="Hoon"
                 name={user!.name}
                 description={style.description}
