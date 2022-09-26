@@ -126,6 +126,7 @@ const loginFn = async (
             name: responseData.name,
           },
           token: responseData.token,
+          tokenExpiration: new Date(new Date().getTime() + 60 * 1000 * 60),
         };
       } else {
         throw new Error('Login failed');
@@ -140,7 +141,7 @@ const loginFn = async (
 const getUserData = async (userId: string): Promise<User | null> => {
   try {
     const token = localStorage.getItem('token') || '';
-    const response = await fetch(`${process.env.REREACT_APP_API_URL}/profile`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -206,10 +207,11 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
       dispatch({ type: AuthActionType.INIT_LOGIN });
       const loginResponse = await loginFn(email, password);
       if (loginResponse) {
-        const { user, token } = loginResponse;
+        const { user, token, tokenExpiration } = loginResponse;
         // store the token in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('userId', user.id);
+        localStorage.setItem('tokenExp', tokenExpiration.toISOString());
         // complete a successful login process
         dispatch({ type: AuthActionType.LOGIN_SUCCESSFUL, payload: { user } });
       } else {
@@ -231,6 +233,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     dispatch({ type: AuthActionType.LOGOUT });
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('tokenExp');
   }, []);
 
   // stored the auth context value in useMemo hook to recalculate

@@ -7,6 +7,7 @@ export interface User {
 export interface LoginResponse {
   user: User;
   token: string;
+  tokenExpiration: Date;
 }
 
 export interface IAuthContext {
